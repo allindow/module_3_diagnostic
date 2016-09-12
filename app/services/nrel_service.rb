@@ -21,6 +21,7 @@ class NrelService
     response = @connection.get "alt-fuel-stations/v1/nearest.json" do |req|
       req.params["location"] = zip
       req.params["radius"] = distance
+      req.params["limit"] = 63
     end
 
     JSON.parse(response.body)["fuel_stations"].map do |station|

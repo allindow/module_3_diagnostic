@@ -1,5 +1,9 @@
 <ul>
+  <% if @stations %>
   <% @stations.each do |station| %>
   <li><%= station %></li>
+  <% end %>
+  <% elsif @all_stations_by_distance %>
+  <%= paginate @all_stations_by_distance, :param_name => :page %>
   <% end %>
 </ul>

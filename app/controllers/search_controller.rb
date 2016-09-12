@@ -2,13 +2,16 @@
 class SearchController < ApplicationController
   def index
     @connection = Faraday.new("https://developer.nrel.gov/api/")
-    @connection.params["api_key"] = ENV["nrel_key"]
-    x = get_10_closest(params[:q])
-    require "pry"; binding.pry
+    stations_array = JSON.parse(get_10_closest(params[:q]).body)
+    @stations = stations_array.map do |station|
+      "#{station["station_name"]}, #{station["street_address"]}, #{station["state"]}, #{station["state"]}, #{station["zip"]},
+      Fuel type: #{station["fuel_type_code"]}, Distance: #{station["distance"]} miles, Access times: #{station["access_days_time"]}"
+    end
   end
 
   def get_10_closest(params)
-    response = @connection.get do |req|
+    response = @connection.get "alt-fuel-stations/v1/nearest.json" do |req|
+      req.params["api_key"] = ENV["nrel_key"]
       req.params["location"] = params
       req.params["radius"] = 6
       req.params["limit"] = 10

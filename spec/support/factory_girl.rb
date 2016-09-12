@@ -1,10 +1,10 @@
 RSpec.configure do |config|
-  config.include FactoryGril::Syntax::Methods
+  config.include FactoryGirl::Syntax::Methods
 
   config.before(:suite) do
     begin
-      DatbaseCleaner.start
-      FactorGirl.lint
+      DatabaseCleaner.start
+      FactoryGirl.lint
     ensure
       DatabaseCleaner.clean
     end
